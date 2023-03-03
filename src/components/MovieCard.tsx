@@ -13,17 +13,16 @@ interface MovieCardProps {
 }
 
 const MovieCard: React.FC<MovieCardProps> = (props: MovieCardProps) => {
-    const[includes,setIncludes] = useState(false)
     const dispatch = useDispatch();
     const likedMovies = useSelector((store: RootState) => store.likes.movies)
-
+    const[includes,setIncludes] = useState(likedMovies.some((movie: Movie) => movie.id == props.id))
     const handleSaveButton = () => {
-        if (likedMovies?.some((movie: Movie) => movie.id == props.id)) {
+        if (likedMovies.find((movie: Movie) => movie.id == props.id)) {
             dispatch(removeMovie(props.id))
-            setIncludes(false)
+            setIncludes(!includes)
         } else {
             dispatch(addMovie(props.id))
-            setIncludes(true)
+            setIncludes(!includes)
         }
     }
     return (
